@@ -37,6 +37,10 @@ properties(
 )
 
 
+// to be replaced by buildlib initialize
+echo "Adding git managed ose_images.sh directory to PATH"
+env.PATH = "${pwd()}/scripts:${env.PATH}"
+
 
 node() {
 
@@ -46,14 +50,19 @@ node() {
     stage ("prepare workspace") {
         sh "mkdir -p ${workdir}"
         writeFile file: plugin_file, text: PLUGIN_LIST
+
+        echo """Some environment vars:
+PATH=${env.PATH}
+WORKSPACE=${env.WORKSPACE}
+"""
     }
 
     stage ("collect plugins") {
-        sh "scripts/collect-jenkins-plugins.sh ${JENKINS_VERSION} ${plugin_file}"
+        sh "collect-jenkins-plugins.sh ${JENKINS_VERSION} ${plugin_file}"
     }
 
     stage ("update dist-git") {
-        sh "scripts/update-dist-git.sh ${JENKINS_VERSION} ${OCP_RELEASE} ${workdir}/working/hpis"
+        sh "update-dist-git.sh ${JENKINS_VERSION} ${OCP_RELEASE} ${workdir}/working/hpis"
     }
 
 }
