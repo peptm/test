@@ -30,9 +30,9 @@ properties(
                     $class: 'hudson.model.StringParameterDefinition',
                     defaultValue: 'openshift-build-1'
                 ],
-            ],
-            disableConcurrentBuilds()
-        ]
+            ]
+        ],
+        disableConcurrentBuilds()
     ]
 )
 
