@@ -52,13 +52,6 @@ node() {
 
         sh "mkdir -p ${workdir}"
         writeFile file: plugin_file, text: PLUGIN_LIST
-
-        echo """Some environment vars:
-PATH=${env.PATH}
-WORKSPACE=${env.WORKSPACE}
-"""
-        echo "Content of workspace:\n"
-        sh 'ls -lRaF'
     }
 
     stage ("collect plugins") {
