@@ -6,8 +6,8 @@ properties(
     [
         [ $class : 'ParametersDefinitionProperty', parameterDefinitions: [
                 [
-                    name: 'MIN_JENKINS_VERSION',
-                    description: 'OCP Version to build',
+                    name: 'JENKINS_VERSION',
+                    description: 'Minimum required Jenkins version',
                     $class: 'hudson.model.ChoiceParameterDefinition',
                     choices: "FIXME",
                     defaultValue: '3.7'
@@ -20,9 +20,9 @@ properties(
                     defaultValue: '3.7'
                 ],
                 [
-                    name: 'PLUGIN_LIST_FILE',
-                    description: 'File with the plugin list',
-                    $class: 'hudson.model.FileParameterDefinition'
+                    name: 'PLUGIN_LIST',
+                    description: 'List of plugin:version to include, one per line',
+                    $class: 'hudson.model.TextParameterDefinition'
                 ],
                 [
                     name: 'TARGET_NODE',
@@ -38,10 +38,22 @@ properties(
 
 
 
-node(TARGET_NODE) {
+node() {
 
-            TEST = sh(returnStdout: true, script: "cat FILE").trim()
+    workdir = "jenkins-plugins"
+    plugin_file = "${workdir}/plugins.txt"
 
-            echo "File:\n${TEST}"
+    stage ("prepare workspace") {
+        sh "mkdir ${workdir}"
+        writeFile file: plugin_file, text: PLUGIN_LIST
+    }
+
+    stage ("collect plugins") {
+        sh "scripts/collect-jenkins-plugins.sh ${JENKINS_VERSION} ${plugin_file}"
+    }
+
+    stage ("update dist-git") {
+        sh "scripts/update-dist-git.sh ${JENKINS_VERSION} ${OCP_RELEASE} ${workdir}/working/hpis"
+    }
 
 }
