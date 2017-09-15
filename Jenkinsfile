@@ -44,7 +44,7 @@ node() {
     plugin_file = "${workdir}/plugins.txt"
 
     stage ("prepare workspace") {
-        sh "mkdir ${workdir}"
+        sh "mkdir -p ${workdir}"
         writeFile file: plugin_file, text: PLUGIN_LIST
     }
 
