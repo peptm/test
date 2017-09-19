@@ -48,7 +48,7 @@ properties(
 
 def mail_success() {
 
-    jenkins_major = { JENKINS_VERSION.split(".")[0] }
+    jenkins_major = JENKINS_VERSION.tokenize('.')[0].toString()
 
     distgit_link = "http://pkgs.devel.redhat.com/cgit/rpms/jenkins-${jenkins_major}-plugins/?h=rhaos-${OCP_RELEASE}-rhel-7"
 
@@ -91,7 +91,7 @@ node() {
         stage ("prepare workspace") {
 
             scripts_dir = "${env.WORKSPACE}/hacks/update-jenkins-plugins"
-            tmpdir = "${env.WORKSPACE}/jenkins-plugins-job"
+            tmpdir = pwd tmp:true
             plugin_file = "${tmpdir}/plugins.txt"
             // Note that collect-jenkins-plugins.sh has a hardcoded output dir:
             plugin_dir = "${scripts_dir}/working/hpis"
