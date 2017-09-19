@@ -48,17 +48,13 @@ properties(
 
 def mail_success() {
 
-    jenkins_major = JENKINS_VERSION.tokenize('.')[0].toString()
-
-    distgit_link = "http://pkgs.devel.redhat.com/cgit/rpms/jenkins-${jenkins_major}-plugins/?h=rhaos-${OCP_RELEASE}-rhel-7"
-
     echo """SUCCESS!
         to: "${MAIL_LIST_SUCCESS}",
         from: "aos-cd@redhat.com",
         replyTo: 'jupierce@redhat.com',
         subject: "jenkins plugins RPM updated in dist-git",
         body: The Jenkins plugins RPM for OCP ${OCP_RELEASE} has been updated in dist-git:
-${distgit_link}
+${env.MYLINK}
 
 Jenkins version: ${JENKINS_VERSION}
 
@@ -86,6 +82,9 @@ Jenkins job: ${env.BUILD_URL}
 node() {
 
     checkout scm
+
+    def mylib = load( "lib/mylib.groovy" )
+    mylib.init()
 
     try {
         stage ("prepare workspace") {
