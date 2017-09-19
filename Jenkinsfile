@@ -80,7 +80,7 @@ def mail_failure(err) {
 ${err}
 
 Jenkins job: ${env.BUILD_URL}
-""");
+"""
 }
 
 node() {
