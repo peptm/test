@@ -99,7 +99,6 @@ node() {
             echo "Adding the plugin scripts directory (${scripts_dir}) to PATH"
             env.PATH = "${scripts_dir}:${env.PATH}"
 
-            sh "mkdir -p ${tmpdir}"
             writeFile file: plugin_file, text: PLUGIN_LIST
         }
 
