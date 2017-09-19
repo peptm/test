@@ -94,7 +94,7 @@ node() {
             tmpdir = "${env.WORKSPACE}/jenkins-plugins-job"
             plugin_file = "${tmpdir}/plugins.txt"
             // Note that collect-jenkins-plugins.sh has a hardcoded output dir:
-            plugin_dir = "${scripts_dir}/working_hpis"
+            plugin_dir = "${scripts_dir}/working/hpis"
 
             echo "Adding the plugin scripts directory (${scripts_dir}) to PATH"
             env.PATH = "${scripts_dir}:${env.PATH}"
